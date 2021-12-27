@@ -10,6 +10,7 @@ class Admin(CustomeUser):
     class Meta:
         proxy = True
         verbose_name="superuser"
+        
 
 class Staff(CustomeUser):
     class Meta:
@@ -23,8 +24,10 @@ class Manager(CustomeUser):
 
 class Customer(CustomeUser):
     address_id = models.ManyToManyField("Adress",related_name='address')
+    class Meta:
+        verbose_name="customer"
 
 class Adress(models.Model):
     city = models.CharField(max_length=10)
     street = models.CharField(max_length=10)
-    plaque = models.ImageField()
+    plaque = models.IntegerField()
