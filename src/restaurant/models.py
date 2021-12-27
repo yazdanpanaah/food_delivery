@@ -28,12 +28,12 @@ class Department(Restaurant):
 
 
 class Food(models.Model):
-    name=models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
     photo = models.ImageField(upload_to='foodimg', null=True, blank=True, default=None)
-    discreption=models.TextField(max_length=200)
-    created_date=models.DateTimeField(auto_add_now=True)
-    category_id=models.ForeignKey("Category",on_delete=models.CASCADE)
-    menu_id=models.ManyToManyField('Menu',through='Food_Menu')
+    discreption = models.TextField(max_length=200)
+    created_date = models.DateTimeField(auto_add_now=True)
+    category_id = models.ForeignKey("Category",on_delete=models.CASCADE)
+    menu_id = models.ManyToManyField('Menu',through='Food_Menu' ,related_name='menu')
 
     def __str__(self) -> str:
         return self.name
@@ -78,10 +78,10 @@ class Order(models.Model):
     delivery_time = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=20, choices= ORDER_STATUS, default='order_registration')
     created_date = models.DateTimeField(auto_now_add=True)
-    CAraddress_id=models.OneToOneField(Adress,on_delete=models.CASCADE)
+    customer_id=models.OneToOneField(Customer,on_delete=models.CASCADE)
     department_id = models.ForeignKey(Department ,on_delete=CASCADE)
 
     def __str__(self) :
-        return f'{self.department_id} order'
+        return f'{self.department_id}_{self.customer_id} order'
 
 
