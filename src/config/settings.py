@@ -41,7 +41,29 @@ INSTALLED_APPS = [
     'django_filters',
     'account',
     'restaurant',
+    'allauth', 
+    'allauth.account',
 ]
+
+AUTH_USER_MODEL = 'account.CustomUser'
+LOGIN_REDIRECT_URL = 'home'
+ACCOUNT_LOGOUT_REDIRECT  = 'home'
+
+SITE_ID = 1
+AUTHENTICATION_BACKENDS = ( 
+    'django.contrib.auth.backends.ModelBackend', 
+    'allauth.account.auth_backends.AuthenticationBackend',
+    
+    )
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+
+ACCOUNT_SESSION_REMEMBER = True 
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False 
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email' 
+ACCOUNT_EMAIL_REQUIRED = True 
+ACCOUNT_UNIQUE_EMAIL = True 
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -126,6 +148,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR/'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
