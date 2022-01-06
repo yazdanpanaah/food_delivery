@@ -23,6 +23,6 @@ urlpatterns = [
     path('',include(('restaurant.urls', 'restaurant'), namespace='restaurant')),
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('adminpanel/', include('admin.urls')),
+    path('adminpanel/', include('adminpanel.urls')),
     path('order/', include('order.urls')),
 ]
