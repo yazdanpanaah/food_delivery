@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    
+<section style='padding:80px;'>
+    {% include 'cart/food/messages.html'%}
+</section>
+    
+    <h1 style='padding:100px; text-align:center;'>Your shopping cart</h1>
+    <a class="btn" style="background-color:orange;"href="{% url 'itemcreate'%}">continue shopping</a>
+  
+
+   
+    <div>
+        <a class="btn" style="background-color:green; color:black;"href="{% url 'finish_order'%}">finish_order</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Image</th>
+                <th scope="col">Food</th>
+                <th scope="col">Number</th>
+                <th scope="col">Remove</th>
+                <th scope="col">Unit price</th>
+                <th scope="col">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart %}
+            {% with foodmenu=item.foodmenu  %}
+                <tr>
+                    <td>
+                        <a href="{{foodmenu.get_absolute_url}}">
+                            <img class="rounded-lg shadow" src="{{foodmenu.Food_id.photo.url}}" height="50" width="50" alt="">
+                        </a>
+                    </td>
+                        <td>{{foodmenu.Food_id.name}}</td>
+                        <td>{{item.number}}</td>
+                    <td>
+                        <form action="{% url 'cart:cart_remove' foodmenu.id %}" method="POST">
+                            <button type="submit" class="btn">remove<i class="fas fa-trash"></i></button>
+                            {% csrf_token %}
+                        </form>
+                    </td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.total_price}}</td>
+                </tr>
+            {% endwith %}
+            {% endfor %}
+            <tr>
+                <td>Total</td>
+                <td colspan="4"></td>
+                <td>{{cart.get_total_price}}</td>
+            </tr> 
+        </table>
+    </div>
+   
+    
+{% endblock content %}

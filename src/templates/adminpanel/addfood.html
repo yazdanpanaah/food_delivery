@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="contact_form" style="padding-top: 100px;">
+    <form id="food_form" method="POST" enctype="multipart/form-data" >
+        {% csrf_token %}
+        <div class="col-sm-12">
+            <div class=" form-group col-10 text-black">
+            {{form.as_p}}
+        </div style="border: 4px solid black;">
+        <input id="button" class="sendButton m-5 p-3" type="submit" name="add_food" value='Add Food'>
+        </div>
+    </form>
+</div>
+{% endblock content %}

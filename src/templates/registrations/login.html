@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% comment %} {% block css %}{% endblock css %} {% endcomment %}
+{% block content %}
+{% load crispy_forms_tags %} 
+<form method="POST" action="{% url 'restaurant:home' %}">
+    {% csrf_token %}
+    {{ register_form|crispy }}  
+    {{form.as_p}}
+    <button type="submit">login</button>
+</form>
+{% endblock content %}
