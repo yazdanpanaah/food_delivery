@@ -19,4 +19,10 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(('cart/'),include(('Cart.urls', 'Cart'), namespace='cart')),
+    path('accounts/',include('accounts.urls')),
+    path('',include(('restaurant.urls', 'restaurant'), namespace='restaurant')),
+    path('accounts/', include('allauth.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    # path('adminpanel/', include('admin.urls')),
+    path('order/', include('order.urls')),
 ]

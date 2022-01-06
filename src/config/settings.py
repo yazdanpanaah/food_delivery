@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'allauth', 
     'allauth.account',
     'Cart.apps.CartConfig',
+    'order.apps.OrderConfig',
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomeUser'
