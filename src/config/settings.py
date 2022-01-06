@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'restaurant',
     'allauth', 
     'allauth.account',
+    'Cart.apps.CartConfig',
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomeUser'
