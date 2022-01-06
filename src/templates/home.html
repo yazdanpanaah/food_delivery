@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{%load static%}
+{% block css %}
+<link href="{% static 'home/style.css' %}" rel="stylesheet">
+{% endblock css %}
+{% block content %}
+
+<div id="dialog-overlay"></div>
+<div id="dialog-box">
+  <div id="dialog-content">
+   
+    
+    <center>
+     
+    </center>
+  </div>
+</div>
+  
+<div style= 'background-image: URL("https://images-cdn.newscred.com/Zz1hY2E3NWFjNjgyYjYxMWViYWYzOTBlZTgzY2U1MmE3MQ=="); background-position: center;
+background-size: cover;
+height: 500px;
+width: 100%;'></div>
+
+
+ 
+  <h3 id="classic-czech-cuisine">WELCOME TO ONLINE RESTAURANT</h3> 
+  
+</div>
+  
+<div >
+    <center> <h2>FOOD MENUS</h2></center>
+   
+    <div>
+		
+      <div class="col-lg-4">
+        {% for foods in foodmenus %}
+        
+        <img class="thumbnail" style="height: 300px; width: 400px; padding-left:30px" src="{{ foods.Food_id.photo.url }}">
+        <section class="box-element product">
+          <h5 style='padding-left:40px '><strong>{{foods.Food_id.name}}</strong></h5>
+          <a class="btn btn-outline-success" style="padding-top:10px; margin-bottom:20px;" href="{%url 'restaurant:food_detail' foods.id%}">View Product</a>
+          <h4 style="display: inline-block;"><strong>${{foods.price}}</strong></h4>
+        </section>
+      </div>
+      
+        {% endfor %}
+
+            <hr>
+
+        <div>
+        <h1>popular foods</h1>
+      </div>
+            
+
+
+        {% for food in best_food  %}
+
+        <img class="thumbnail" style="height: 300px; width: 400px; padding-left:30px" src="{{ food.photo.url }}">
+        <section class="box-element product">
+          <h5 style='padding-left:40px '><strong>{{food.name}}</strong></h5>
+        </section>
+
+        {% endfor %}
+     
+
+        <hr>
+        <h1>popular restaurants</h1>
+
+        {% for dep in best_department %}
+
+        <section class="box-element product">
+          <h5 style='padding-left:40px '><strong>{{dep.name}}</strong></h5>
+        </section>
+        <section class="box-element product">
+          <h5 style='padding-left:40px '><strong>{{dep.adress}}</strong></h5>
+        </section>
+        <section class="box-element product">
+          <h5 style='padding-left:40px '><strong>{{dep.manager.id}}</strong></h5>
+        </section>
+        <section class="box-element product">
+          <h5 style='padding-left:40px '><strong>{{dep.created_date_jalali}}</strong></h5>
+        </section>
+      
+
+
+
+        {% endfor %}
+
+
+  
+
+
+</div> 
+
+{% endblock content %}
+{% block script %}
+<script src="{% static 'home/home.js' %}"></script>
+{% endblock script %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block css %}{% endblock css %}
+{% load crispy_forms_tags %} 
+{% block content %}
+<div style='padding:200px;'>
+<h2>Sign Up</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ register_form|crispy }}  
+        {{ form.as_p }}
+        <button type="submit">Sign Up</button>
+    </form>
+</div>
+{% endblock content %}

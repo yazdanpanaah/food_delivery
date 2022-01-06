@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid">
+    <h1>{{foodmenu.Food_id.name}}</h1>
+    <hr>
+    <div class="row">
+        <div class="col">
+            <img src="{{foodmenu.Food_id.photo.url}}" width="300" height="200" alt="">
+        </div>
+        <div class="col">
+            <div class="row">
+                <b>Details : </b>
+                <p>{{foodmenu.Food_id.discreption}}</p>
+            </div>
+            <div class="row">
+                <p><a href="{{foodmenu.get_absolute_url}}">{{foodmenu.Food_id.category}}</a></p>
+            </div>
+            <div class="row">
+                <p style="font-weight: bolder;font-size:larger;">branch: {{foodmenu.department_id}}</p>
+            </div>
+            <div class="row">
+                <p style="font-weight: bolder;font-size:larger;">{{foodmenu.price}} T</p>
+            </div>
+            <div class="row">
+                
+                            {% comment %} {% if messages %}
+                                <ul class="messages">
+                                    {% for message in messages %}
+                                    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %} {% endcomment %}
+              
+                <form action="{% url 'cart:cart_add' foodmenu.id %}" method="POST">
+                    
+                    {% csrf_token %}
+                    {{form}}
+                    <button type="submit" class="btn btn-primary text-light" >Add to cart <i class="fas fa-shopping-cart"></i></button>
+                </form>
+            </div>
+            
+        </div>
+       
+        <div class="col"></div>
+        <div class="col"></div>
+    </div>
+
+    
+</div>
+{% endblock content %}
