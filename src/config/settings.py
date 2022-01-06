@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CART_SESSION_ID = 'cart'
 
 # Application definition
 
@@ -50,8 +51,8 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomeUser'
-LOGIN_REDIRECT_URL = 'home'
-ACCOUNT_LOGOUT_REDIRECT  = 'home'
+LOGIN_REDIRECT_URL = 'restaurant:home'
+ACCOUNT_LOGOUT_REDIRECT  = 'restaurant:home'
 
 SITE_ID = 1
 AUTHENTICATION_BACKENDS = ( 
@@ -62,12 +63,17 @@ AUTHENTICATION_BACKENDS = (
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
 
 ACCOUNT_SESSION_REMEMBER = True 
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False 
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True 
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email' 
 ACCOUNT_EMAIL_REQUIRED = True 
-ACCOUNT_UNIQUE_EMAIL = True 
+ACCOUNT_UNIQUE_EMAIL = True
 
+
+ACCOUNT_FORMS = {
+    "signup": "accounts.forms.CostumRegisterForm",
+}
+ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.CostumRegisterForm'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -152,6 +158,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR/'static'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR/'media'
 
