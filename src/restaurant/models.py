@@ -1,9 +1,10 @@
 from django.db import models
 from django.core.validators import (MinValueValidator, MaxValueValidator, MinLengthValidator)
 from django.db.models.base import Model
-from django.db.models.deletion import CASCADE
+from django.db.models.deletion import CASCADE, SET_DEFAULT, SET_NULL
 from django.db.models.fields import CharField
 from accounts.models import *
+import jdatetime
 
 # Create your models here.
 
@@ -20,23 +21,30 @@ class Department(Restaurant):
     address = models.CharField(max_length=200)
     city = models.CharField(max_length=100)
     created_date = models.DateTimeField(auto_now_add=True)
-    manager_id = models.OneToOneField(Manager,on_delete=models.CASCADE)
-    category_id=models.OneToOneField("Category",on_delete=models.CASCADE)
+    manager_id = models.OneToOneField(Manager,on_delete=models.PROTECT ,related_name='maneger')
+    category_id=models.ForeignKey("Category",on_delete=models.PROTECT ,related_name='category_id')
+    food_id = models.ManyToManyField('Food',through='FoodMenu' ,related_name='foodmenu_id')
     def __str__(self) -> str:
         return self.name
 
-
+    @property
+    def created_date_jalali(self):
+        return jdatetime.datetime.fromgregorian(datetime=self.created_date)
 
 class Food(models.Model):
     name = models.CharField(max_length=30)
     photo = models.ImageField(upload_to='foodimg', null=True, blank=True, default=None)
     discreption = models.TextField(max_length=200)
     created_date = models.DateTimeField(auto_now_add =True)
-    category_id = models.ForeignKey("Category",on_delete=models.CASCADE)
-    menu_id = models.ManyToManyField('Menu',through='Food_Menu' ,related_name='menu')
+    category_id = models.ForeignKey("Category",on_delete=models.PROTECT, related_name='category_id2')#food can not be without category
+    meal_id = models.ManyToManyField("Meal",related_name="meal_id")
 
     def __str__(self) -> str:
         return self.name
+
+    @property
+    def created_date_jalali(self):
+        return jdatetime.datetime.fromgregorian(datetime=self.created_date)
 
 class Category(models.Model):
     category = models.CharField(max_length=100)
@@ -44,26 +52,45 @@ class Category(models.Model):
         return  self.category
 
 
-class Menu(models.Model):
-    department_id = models.ForeignKey(Department, on_delete=models.CASCADE)
-    def __str__(self) -> str:
-        return f'{self.department_id} Menu'
+# class Menu(models.Model):
+#     department_id = models.ForeignKey(Department, on_delete=models.CASCADE ,related_name='menu')
+#     # food_menu_id = models.ForeignKey('Food_Menu', on_delete=models.CASCADE ,related_name='menu', null=True)
+#     def __str__(self) -> str:
+#         return f'{self.department_id} Menu'
 
-class Food_Menu(models.Model):
-    Food_id = models.ForeignKey(Food, on_delete= models.CASCADE)
-    Menu_id = models.ForeignKey(Menu, on_delete=models.PROTECT)
+class FoodMenu(models.Model):
+    Food_id = models.ForeignKey(Food, on_delete= models.PROTECT,related_name='foodid')
+    department_id = models.ForeignKey(Department, on_delete=models.CASCADE ,related_name='Department')
     price = models.IntegerField()
     number = models.IntegerField()
 
     def __str__(self) -> str:
-        return f'{self.Menu_id}'
+        return f'{self.department_id}-{self.Food_id}'
 
 
 class Meal(models.Model):
-    name = models.CharField(max_length=100)
-    food_id = models.ManyToManyField(Food)
+    MEAL_CHOICES=(
+        ('breakfast','breakfast'),
+        ("lunch",'lunch'),
+        ("dinner","dinner")
+
+    )
+    meal = models.CharField(choices=MEAL_CHOICES, max_length=100 ,default='dinner')
     def __str__(self) -> str:
-        return self.name
+        return self.meal
+
+class OrderItem(models.Model):
+    order_id = models.ForeignKey('Order', on_delete=CASCADE ,related_name='order_id')
+    food_menu_id = models.ForeignKey(FoodMenu, on_delete=SET_NULL,null=True, related_name='foodmenu_id')
+    number = models.IntegerField()
+    price = models.IntegerField()
+    def __str__(self) -> str:
+        return f'orderitem:{self.food_menu_id}'
+
+    
+    def get_cost(self):
+        return self.price * self.number
+        
 
 class Order(models.Model):
     ORDER_STATUS = (
@@ -73,15 +100,17 @@ class Order(models.Model):
         ('Delivery', 'Delivery'),
         
     )
-    number = models.IntegerField()
-    total_price = models.IntegerField()
+    total_price = models.IntegerField(null=True, blank=True)
+    adress_id = models.ForeignKey(Adress,on_delete=CASCADE,related_name='adress_id',null=True, blank=True) 
     delivery_time = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=20, choices= ORDER_STATUS, default='order_registration')
     created_date = models.DateTimeField(auto_now_add=True)
-    customer_id=models.OneToOneField(Customer,on_delete=models.CASCADE)
-    department_id = models.ForeignKey(Department ,on_delete=CASCADE)
-
+    customer_id=models.OneToOneField(Customer,on_delete=models.SET_NULL, related_name='customer_id',null=True)
+    # department_id = models.ForeignKey(Department ,on_delete=CASCADE, related_name='department')
+    order_item = models.ManyToManyField(FoodMenu, through='OrderItem' ,related_name='orederitem_id')
     def __str__(self) :
-        return f'{self.department_id}_{self.customer_id} order'
+        return f'{self.customer_id} order'
 
-
+    @property
+    def created_date_jalali(self):
+        return jdatetime.datetime.fromgregorian(datetime=self.created_date)
