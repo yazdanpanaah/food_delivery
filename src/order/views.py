@@ -53,7 +53,7 @@ def order_create(request):
                 for item in cart:
                     order_item = OrderItem.objects.create(order_id= order,food_menu_id=item['foodmenu'],price=item['price'],number=item['number'])
                     order_item.save()
-                orderitem_id = Adress.objects.get(id = order_item.id) 
+                # orderitem_id = Adress.objects.get(id = order_item.id) 
                 
                 city = request.POST['city']
                 street = request.POST['street']
