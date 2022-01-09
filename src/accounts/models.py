@@ -34,7 +34,7 @@ class Manager(CustomeUser):
     
 
 class Customer(CustomeUser):
-    adress_id = models.ManyToManyField('Adress', through='CustomerAdress', related_name='customeradress')
+    adress = models.ManyToManyField('Adress', through='CustomerAdress', related_name='customeradress')
 
     class Meta:
         verbose_name="customer"
@@ -55,8 +55,8 @@ class Customer(CustomeUser):
 
 class CustomerAdress(models.Model):
     main_adress = models.BooleanField(default=False)
-    customer_id = models.ForeignKey(Customer,on_delete=models.SET_NULL,null=True, related_name='customer')
-    address_id = models.ForeignKey('Adress', on_delete=models.SET_NULL , null=True,related_name='adress_related')
+    customer = models.ForeignKey(Customer,on_delete=models.SET_NULL,null=True, related_name='customer2')
+    address = models.ForeignKey('Adress', on_delete=models.SET_NULL , null=True,related_name='adress_related')
 
 
 
