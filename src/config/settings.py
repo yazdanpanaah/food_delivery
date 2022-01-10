@@ -72,10 +72,10 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 
 
-ACCOUNT_FORMS = {
-    "signup": "accounts.forms.CostumRegisterForm",
-}
-ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.CostumRegisterForm'
+# ACCOUNT_FORMS = {
+#     "signup": "accounts.forms.CostumRegisterForm",
+# }
+# ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.CostumRegisterForm'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

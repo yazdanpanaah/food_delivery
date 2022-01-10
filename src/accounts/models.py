@@ -58,6 +58,9 @@ class CustomerAdress(models.Model):
     customer = models.ForeignKey(Customer,on_delete=models.SET_NULL,null=True, related_name='customer2')
     address = models.ForeignKey('Adress', on_delete=models.SET_NULL , null=True,related_name='adress_related')
 
+    def __str__(self) -> str:
+        return f"{self.customer}-adress"
+
 
 
 class Adress(models.Model):
