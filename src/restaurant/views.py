@@ -10,6 +10,10 @@ def home(req):
     best_food = Food.objects.all().filter(food2__foodmenu2__order__status = "order_registration").annotate(our_sum=Sum("food2__foodmenu2__number")).order_by("-our_sum")[:3]
     print('--------------------------------')
     print(best_food)
+    print('--------------------------------')
+    # print(req.user.customer.id)
+
+
     best_department = Department.objects.filter(food__food2__foodmenu2__order__status="order_registration").annotate(sums =Sum("food__food2__foodmenu2__order__total_price") ).order_by("-sums")[:3]
     
     context ={

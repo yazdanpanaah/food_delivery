@@ -73,25 +73,24 @@ def order_create(request):
                 
               
 
-def item_create(request):
+def item_create(request , id):
     cart = Cart(request)
     if request.method == 'GET':
         if request.user.is_authenticated:
-            user = Customer.objects.filter(username = request.user).values_list()[0][0]
-            customer = Customer.objects.get(id=user)
-            
-            if Order.objects.filter(customer_id = customer).exists():
-                orderid = Order.objects.filter(customer_id = customer).values_list()[0][0]
-                order_id = Order.objects.get(id=orderid)
+            user = request.user.customer.id
+            user = Customer.objects.get(id=user)
+            if Order.objects.filter(customer = user).exists():
+                order = Order.objects.filter(customer_id = user).values_list()[0][0]
+                order= Order.objects.get(id=order)
                 for item in cart:
-                        order_item = OrderItem.objects.create(order_id= order_id,food_menu_id=item['foodmenu'],price=item['price'],number=item['number'])
+                        order_item = OrderItem.objects.create(order= order,foodmenu=item['foodmenu'],price=item['price'],number=item['number'])
                         order_item.save()
                         
             else:
-                order = Order.objects.create(status="order", customer_id = customer)
+                order = Order.objects.create(status="order", customer = user)
                 order.save()
                 for item in cart:
-                    order_item = OrderItem.objects.create(order_id= order,food_menu_id=item['foodmenu'],price=item['price'],number=item['number'])
+                    order_item = OrderItem.objects.create(order= order,foodmenu=item['foodmenu'],price=item['price'],number=item['number'])
                     order_item.save()
     # foodmenuid = FoodMenu.objects.filter(Food_id__foodmenuid__order_id = order_id).values_list()
     # print(foodmenuid)

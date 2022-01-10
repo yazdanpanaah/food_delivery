@@ -52,12 +52,6 @@ class Category(models.Model):
         return  self.category
 
 
-# class Menu(models.Model):
-#     department_id = models.ForeignKey(Department, on_delete=models.CASCADE ,related_name='menu')
-#     # food_menu_id = models.ForeignKey('Food_Menu', on_delete=models.CASCADE ,related_name='menu', null=True)
-#     def __str__(self) -> str:
-#         return f'{self.department_id} Menu'
-
 class FoodMenu(models.Model):
     food = models.ForeignKey(Food, on_delete= models.PROTECT,related_name='food2')
     department = models.ForeignKey(Department, on_delete=models.CASCADE ,related_name='Department')
@@ -65,7 +59,7 @@ class FoodMenu(models.Model):
     number = models.IntegerField()
 
     def __str__(self) -> str:
-        return f'{self.department_id}-{self.Food_id}'
+        return f'{self.department}-{self.food}'
 
 
 class Meal(models.Model):
@@ -85,7 +79,7 @@ class OrderItem(models.Model):
     number = models.IntegerField()
     price = models.IntegerField()
     def __str__(self) -> str:
-        return f'orderitem:{self.food_menu_id}'
+        return f'orderitem:{self.foodmenu}'
 
     
     def get_cost(self):
@@ -109,7 +103,7 @@ class Order(models.Model):
     # department_id = models.ForeignKey(Department ,on_delete=CASCADE, related_name='department')
     order_item = models.ManyToManyField(FoodMenu, through='OrderItem' ,related_name='orederitem1')
     def __str__(self) :
-        return f'{self.customer_id} order'
+        return f'{self.customer} order'
 
     @property
     def created_date_jalali(self):

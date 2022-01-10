@@ -58,17 +58,20 @@ def cart_add(request,foodmenu_id):
 def cart_remove(request,foodmenu_id):
     cart = Cart(request)
     foodmenu = get_object_or_404(FoodMenu,id=foodmenu_id)
+    if request.user.is_authenticated:
+            user = request.user.customer.id
+            user = Customer.objects.get(id=user)
+            if Order.objects.filter(customer= user).exists():
+                orderitem = OrderItem.objects.filter(foodmenu = foodmenu_id).delete()
+
+
+
+            foodmenu = get_object_or_404(FoodMenu,id=foodmenu_id)
+            cart.remove(foodmenu)
+
+
+    foodmenu = get_object_or_404(FoodMenu,id=foodmenu_id)
     cart.remove(foodmenu)
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            user = Customer.objects.filter(username = request.user).values_list()[0][0]
-            customer = Customer.objects.get(id=user)
-            # print(user)
-            order = Order.objects.filter(customer_id = customer).delete()
-            # order.save()
-            for item in cart:
-                    order_item = OrderItem.objects.create(order_id= order,food_menu_id=item['foodmenu'],price=item['price'],number=item['number'])
-                    order_item.save()
     return redirect('cart:carts_detail')
 
 

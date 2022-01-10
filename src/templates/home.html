@@ -16,14 +16,14 @@
   </div>
 </div>
   
-<div style= 'background-image: URL("https://images-cdn.newscred.com/Zz1hY2E3NWFjNjgyYjYxMWViYWYzOTBlZTgzY2U1MmE3MQ=="); background-position: center;
+<div style= 'background-image: URL("https://images2.alphacoders.com/108/1085778.jpg"); background-position: center;
 background-size: cover;
 height: 500px;
 width: 100%;'></div>
 
 
  
-  <h3 id="classic-czech-cuisine">WELCOME TO ONLINE RESTAURANT</h3> 
+  <h3 id="classic-czech-cuisine" style='font-weight:bold; padding-bottom:100px;'>WELCOME TO ONLINE RESTAURANT</h3> 
   
 </div>
   
@@ -35,9 +35,9 @@ width: 100%;'></div>
       <div class="col-lg-4">
         {% for foods in foodmenus %}
         
-        <img class="thumbnail" style="height: 300px; width: 400px; padding-left:30px" src="{{ foods.Food_id.photo.url }}">
+        <img class="thumbnail" style="height: 300px; width: 400px; padding-left:30px" src="{{ foods.food.photo.url }}">
         <section class="box-element product">
-          <h5 style='padding-left:40px '><strong>{{foods.Food_id.name}}</strong></h5>
+          <h5 style='padding-left:40px '><strong>{{foods.food.name}}</strong></h5>
           <a class="btn btn-outline-success" style="padding-top:10px; margin-bottom:20px;" href="{%url 'restaurant:food_detail' foods.id%}">View Product</a>
           <h4 style="display: inline-block;"><strong>${{foods.price}}</strong></h4>
         </section>
