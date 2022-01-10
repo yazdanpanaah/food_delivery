@@ -7,13 +7,7 @@
 
 <div id="dialog-overlay"></div>
 <div id="dialog-box">
-  <div id="dialog-content">
-   
-    
-    <center>
-     
-    </center>
-  </div>
+  <div id="dialog-content"></div>
 </div>
   
 <div style= 'background-image: URL("https://images2.alphacoders.com/108/1085778.jpg"); background-position: center;
@@ -27,23 +21,22 @@ width: 100%;'></div>
   
 </div>
   
-<div >
+
     <center> <h2>FOOD MENUS</h2></center>
    
-    <div>
-		
-      <div class="col-lg-4">
+    
+		<div class='d-flex flex-row bd-highlight mb-3 row row-cols-2 row-cols-lg-3'>
+        {% comment %} <div class='d-flex flex-row bd-highlight mb-3'> {% endcomment %}
         {% for foods in foodmenus %}
-        
-        <img class="thumbnail" style="height: 300px; width: 400px; padding-left:30px" src="{{ foods.food.photo.url }}">
-        <section class="box-element product">
-          <h5 style='padding-left:40px '><strong>{{foods.food.name}}</strong></h5>
-          <a class="btn btn-outline-success" style="padding-top:10px; margin-bottom:20px;" href="{%url 'restaurant:food_detail' foods.id%}">View Product</a>
-          <h4 style="display: inline-block;"><strong>${{foods.price}}</strong></h4>
-        </section>
-      </div>
+        <div >
+        <img class="thumbnail" style="height: 300px; width: 400px; padding-left:30px; padding-right:30px;" src="{{ foods.food.photo.url }}">
+          <h5 style='padding-left:30px; padding-top:10px; padding-bottom:10px  '><strong>{{foods.food.name}}--------------------------${{foods.price}}</strong></h5>
+          <a class="btn btn-outline-success" style=" margin-bottom:20px; margin-left:30px" href="{%url 'restaurant:food_detail' foods.id%}">View Product</a>
+       </div>
+     
       
         {% endfor %}
+      </div>
 
             <hr>
 
@@ -90,7 +83,7 @@ width: 100%;'></div>
   
 
 
-</div> 
+
 
 {% endblock content %}
 {% block script %}
