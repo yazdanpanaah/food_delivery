@@ -26,7 +26,8 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('adminpanel/', include('adminpanel.urls')),
-    path('order/', include('order.urls')),
+    path('order/',include(('order.urls', 'order'), namespace='order')),
+    path('profile/',include('customerpanel.urls'))
 ]
 
 urlpatterns += static(settings.STATIC_URL,document_root = settings.STATIC_ROOT)

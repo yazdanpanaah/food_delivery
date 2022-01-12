@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'Cart.apps.CartConfig',
     'order.apps.OrderConfig',
     'adminpanel',
+    'customerpanel'
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomeUser'

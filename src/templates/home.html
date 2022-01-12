@@ -52,6 +52,9 @@ width: 100%;'></div>
         <section class="box-element product">
           <h5 style='padding-left:40px '><strong>{{food.name}}</strong></h5>
         </section>
+        <section class="box-element product">
+          <h5 style='padding-left:40px '><strong>{{food.department}}</strong></h5>
+        </section>
 
         {% endfor %}
      
@@ -60,15 +63,14 @@ width: 100%;'></div>
         <h1>popular restaurants</h1>
 
         {% for dep in best_department %}
-
+        <section class="box-element product">
+          <img class="thumbnail" style="height: 300px; width: 400px; padding-left:30px" src="{{ dep.photo.url }}">
+        </section>
         <section class="box-element product">
           <h5 style='padding-left:40px '><strong>{{dep.name}}</strong></h5>
         </section>
         <section class="box-element product">
-          <h5 style='padding-left:40px '><strong>{{dep.adress}}</strong></h5>
-        </section>
-        <section class="box-element product">
-          <h5 style='padding-left:40px '><strong>{{dep.manager.id}}</strong></h5>
+          <h5 style='padding-left:40px '><strong>{{dep.city}}-{{dep.address}}</strong></h5>
         </section>
         <section class="box-element product">
           <h5 style='padding-left:40px '><strong>{{dep.created_date_jalali}}</strong></h5>
