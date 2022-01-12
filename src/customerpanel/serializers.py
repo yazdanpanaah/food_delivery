@@ -16,7 +16,7 @@ class AddressSerializer(serializers.ModelSerializer):
         model=Adress
         fields=['id','city','street','plaque','owner']
 
-class CustomerOrdeSerializer(serializers.ModelSerializer):
+class OrderSerializer(serializers.ModelSerializer):
     customer=serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model=Order
