@@ -24,12 +24,13 @@ class Department(Restaurant):
     manager = models.OneToOneField(Manager,on_delete=models.PROTECT ,related_name='maneger')
     category=models.ForeignKey("Category",on_delete=models.PROTECT ,related_name='category1')
     food = models.ManyToManyField('Food',through='FoodMenu' ,related_name='foodmenu1')
+    photo = models.ImageField(upload_to='branchimg', null=True, blank=True, default=None)
     def __str__(self) -> str:
         return self.name
 
     @property
     def created_date_jalali(self):
-        return jdatetime.datetime.fromgregorian(datetime=self.created_date)
+        return jdatetime.datetime.fromgregorian(datetime=self.created_date).strftime("%Y-%m-%d")
 
 class Food(models.Model):
     name = models.CharField(max_length=30)
@@ -44,7 +45,7 @@ class Food(models.Model):
 
     @property
     def created_date_jalali(self):
-        return jdatetime.datetime.fromgregorian(datetime=self.created_date)
+        return jdatetime.datetime.fromgregorian(datetime=self.created_date).strftime("%Y-%m-%d %H:%M:%S")
 
 class Category(models.Model):
     category = models.CharField(max_length=100)
@@ -99,7 +100,7 @@ class Order(models.Model):
     delivery_time = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=20, choices= ORDER_STATUS, default='order_registration')
     created_date = models.DateTimeField(auto_now_add=True)
-    customer=models.OneToOneField(Customer,on_delete=models.SET_NULL, related_name='customer1',null=True)
+    customer=models.ForeignKey(Customer,on_delete=models.SET_NULL, related_name='customer1',null=True)
     # department_id = models.ForeignKey(Department ,on_delete=CASCADE, related_name='department')
     order_item = models.ManyToManyField(FoodMenu, through='OrderItem' ,related_name='orederitem1')
     def __str__(self) :
@@ -107,4 +108,4 @@ class Order(models.Model):
 
     @property
     def created_date_jalali(self):
-        return jdatetime.datetime.fromgregorian(datetime=self.created_date)
+        return jdatetime.datetime.fromgregorian(datetime=self.created_date).strftime("%Y-%m-%d")
