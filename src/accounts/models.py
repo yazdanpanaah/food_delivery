@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.deletion import SET_NULL
+from django.conf import settings
 
 # Create your models here.
 class CustomeUser(AbstractUser):
@@ -67,6 +68,7 @@ class Adress(models.Model):
     city = models.CharField(max_length=10)
     street = models.CharField(max_length=10)
     plaque = models.IntegerField()
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,related_name='owner',on_delete=models.CASCADE,null=True,blank=True)
 
     def __str__(self) -> str:
         return f'{self.city}-{self.street}-{self.plaque}'
