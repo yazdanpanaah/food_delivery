@@ -12,7 +12,7 @@ from .decorators import *
 
 
 
-
+@customer_required()
 class CustomerView(viewsets.ModelViewSet):
     serializer_class = CustomerSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -29,7 +29,7 @@ class CustomerView(viewsets.ModelViewSet):
             return response.Response(status=status.HTTP_204_NO_CONTENT)
         return response.Response(status=status.HTTP_400_BAD_REQUEST, data="You are not allowed to delete!")
 
-
+@customer_required()
 class AddressView(viewsets.ModelViewSet):
     serializer_class=AddressSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -42,7 +42,7 @@ class AddressView(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user)
 
 
-
+@customer_required()
 class OrderView(viewsets.ReadOnlyModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -55,7 +55,6 @@ class OrderView(viewsets.ReadOnlyModelViewSet):
         serializer.save(customer=self.request.user)
 
 @login_required
-# @customer_required()
 def profile(req):
     info = Customer.objects.filter(id = req.user.id)
     return render(req, 'customerpanel/profile.html', {'info':info})
