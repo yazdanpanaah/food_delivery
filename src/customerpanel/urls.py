@@ -12,5 +12,12 @@ router.register(r'order', OrderView,basename='order')
 
 urlpatterns = [
     path('api/',include(router.urls)),
+    path('', profile, name='profile'),
+    path('update/', update_profile, name='update_profile'),
+    path("address/",address,name="adress"), 
+    path("history/",history,name="history"), 
+ 
+
+
     
 ]

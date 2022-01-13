@@ -1,9 +1,12 @@
 #from _typeshed import Self
-from django.shortcuts import render
+from django.contrib.auth import login
+from django.shortcuts import redirect, render
 from .serializers import *
 from rest_framework import generics, viewsets
 from rest_framework import generics, permissions, response, status
 from rest_framework import permissions
+from .forms import *
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -47,3 +50,27 @@ class OrderView(viewsets.ReadOnlyModelViewSet):
         return queryset
     def perform_create(self,serializer):
         serializer.save(customer=self.request.user)
+
+@login_required
+def profile(req):
+    info = Customer.objects.filter(id = req.user.id)
+    return render(req, 'customerpanel/profile.html', {'info':info})
+
+def update_profile(request):
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST,instance = request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = EditProfileForm(instance=request.user)
+        context = {'form':form}
+        return render(request, 'customerpanel/update_profile.html', context)
+
+
+def address(request): 
+    return render(request, 'customerpanel/address.html') 
+   
+def history(request): 
+    return render(request, 'customerpanel/history.html') 
+ 
