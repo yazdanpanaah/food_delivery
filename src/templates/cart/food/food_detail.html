@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container-fluid">
-    <h1>{{foodmenu.Food_id.name}}</h1>
+    <h1>{{foodmenu.food.name}}</h1>
     <hr>
     <div class="row">
         <div class="col">
-            <img src="{{foodmenu.Food_id.photo.url}}" width="300" height="200" alt="">
+            <img src="{{foodmenu.food.photo.url}}" width="300" height="200" alt="">
         </div>
         <div class="col">
             <div class="row">
                 <b>Details : </b>
-                <p>{{foodmenu.Food_id.discreption}}</p>
+                <p>{{foodmenu.food.discreption}}</p>
             </div>
             <div class="row">
-                <p><a href="{{foodmenu.get_absolute_url}}">{{foodmenu.Food_id.category}}</a></p>
+                <p><a href="{{foodmenu.get_absolute_url}}">{{foodmenu.food.category}}</a></p>
             </div>
             <div class="row">
-                <p style="font-weight: bolder;font-size:larger;">branch: {{foodmenu.department_id}}</p>
+                <p style="font-weight: bolder;font-size:larger;">branch: {{foodmenu.department}}</p>
             </div>
             <div class="row">
                 <p style="font-weight: bolder;font-size:larger;">{{foodmenu.price}} T</p>

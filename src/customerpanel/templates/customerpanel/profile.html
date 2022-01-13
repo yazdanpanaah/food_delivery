@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if msg %}
+        {{msg}}
+    {% endif %}
+    <div style='margin:100px'>
+    {% for info in info  %}
+        <h4>email: {{info.email}}</h3>
+        <h4>username: {{info.username}}</h4>
+        <h4>firstname: {{info.first_name}}</h4>
+        <h4>lastname: {{info.last_name}}</h4>
+    
+    {% endfor %}
+</div>
+   
+    <div style="padding:30px">
+        <a class='btn btn-primary btn-dark'href="{% url 'update_profile'%}">edite profile</a>
+        <a href="{% url 'adress'  %}" style=' width: 100px; padding-left:20px;'class="btn btn-dark">ADDRESS</a>
+        <a href="{% url 'history'  %}" class="btn btn-dark" style='padding-left:20px; width: 100px;'>HISTORY</a>
+        
+    </div>  
+
+
+
+{% endblock content %}

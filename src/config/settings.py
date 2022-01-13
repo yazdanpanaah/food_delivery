@@ -43,11 +43,15 @@ INSTALLED_APPS = [
     'django_filters',
     'accounts',
     'restaurant',
+    'crispy_forms',
     'allauth', 
     'allauth.account',
+    'allauth.socialaccount',
     'Cart.apps.CartConfig',
     'order.apps.OrderConfig',
     'adminpanel',
+    'customerpanel',
+    'restaurantpanel'
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomeUser'
@@ -70,10 +74,10 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 
 
-ACCOUNT_FORMS = {
-    "signup": "accounts.forms.CostumRegisterForm",
-}
-ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.CostumRegisterForm'
+# ACCOUNT_FORMS = {
+#     "signup": "accounts.forms.CostumRegisterForm",
+# }
+# ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.CostumRegisterForm'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -167,6 +171,6 @@ MEDIA_ROOT = BASE_DIR/'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-REST_FRAMEWORK = {
-'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
-}
+# REST_FRAMEWORK = {
+# 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+# }

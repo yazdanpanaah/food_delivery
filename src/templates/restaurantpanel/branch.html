@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<br> 
+{% for department in object_list %} 
+<div class="card text-center"> 
+    <div class="card-header"> 
+    {{department.restaurant}} 
+       
+    </div> 
+    <div class="card-body"> 
+      <h5 class="card-title">{{department.name}}</h5> 
+      <p class="card-text">category:{{department.category}}</p> 
+      <p class="card-text">description:{{department.discreption}}</p> 
+      <p class="card-text">address:{{department.city}}_{{department.address}}</p> 
+      {% if is_primary %} 
+      <p class="card-text">main department</p> 
+ 
+      {% endif %} 
+ 
+       
+      <a href="{% url 'update_branch' department.pk %}" class="btn btn-primary">Edit department</a> 
+    </div> 
+    <div class="card-footer text-muted"> 
+      {{department.created_at_jalali.date}} 
+    </div> 
+  </div> 
+  {% endfor %} 
+
+
+
+
+{% endblock content %}

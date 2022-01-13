@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.deletion import SET_NULL
+from django.conf import settings
 
 # Create your models here.
 class CustomeUser(AbstractUser):
@@ -34,7 +35,7 @@ class Manager(CustomeUser):
     
 
 class Customer(CustomeUser):
-    adress_id = models.ManyToManyField('Adress', through='CustomerAdress', related_name='customeradress')
+    adress = models.ManyToManyField('Adress', through='CustomerAdress', related_name='customeradress')
 
     class Meta:
         verbose_name="customer"
@@ -55,8 +56,11 @@ class Customer(CustomeUser):
 
 class CustomerAdress(models.Model):
     main_adress = models.BooleanField(default=False)
-    customer_id = models.ForeignKey(Customer,on_delete=models.SET_NULL,null=True, related_name='customer')
-    address_id = models.ForeignKey('Adress', on_delete=models.SET_NULL , null=True,related_name='adress_related')
+    customer = models.ForeignKey(Customer,on_delete=models.SET_NULL,null=True, related_name='customer2')
+    address = models.ForeignKey('Adress', on_delete=models.SET_NULL , null=True,related_name='adress_related')
+
+    def __str__(self) -> str:
+        return f"{self.customer}-adress"
 
 
 
@@ -64,6 +68,7 @@ class Adress(models.Model):
     city = models.CharField(max_length=10)
     street = models.CharField(max_length=10)
     plaque = models.IntegerField()
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,related_name='owner',on_delete=models.CASCADE,null=True,blank=True)
 
     def __str__(self) -> str:
         return f'{self.city}-{self.street}-{self.plaque}'

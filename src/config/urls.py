@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,5 +26,12 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('adminpanel/', include('adminpanel.urls')),
-    path('order/', include('order.urls')),
+    path('order/',include(('order.urls', 'order'), namespace='order')),
+    path('profile/',include('customerpanel.urls')),
+    path('api-auth/',include('rest_framework.urls')),
+    path('mangerprofile/',include('restaurantpanel.urls')),
+
 ]
+
+urlpatterns += static(settings.STATIC_URL,document_root = settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

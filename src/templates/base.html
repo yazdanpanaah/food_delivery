@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     {% block title %}{% endblock title %}
     <title>restaurant</title>
     {% block meta %}{% endblock meta %}
@@ -13,19 +14,29 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top "  >
-        <a class="navbar-brand text-warning" href="{%url 'restaurant:home' %}" >online Restaurant</a>
+        <a class="navbar-brand text-warning" href="{%url 'restaurant:home' %}" >Home</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse d-flex flex-row-reverse " id="navbarNav">
           <ul class="navbar-nav">
             {% if user.is_authenticated %}
-            <h3 style="color:white; text-align:center padding-right:30px;">wellcome {{user.username}}!</h3>
-                <p><a href="{% url 'logout' %}">Log Out</a></p>
+            <li class="nav-item">
+            <a class ='nav-link text-warning'>wellcome {{user.username}}!</a>
+            </li>
+            <li class="nav-item">
+                <p><a class ='nav-link text-warning' href="{% url 'logout' %}">Log Out</a></p>
+              </li>
             {% else %}
-                <a class ='text-warning'style="padding-right:20px; text-decoration:none;"href="{% url 'login' %}">Log In</a> |
-                <a class ='text-warning'style="padding-right:20px; text-decoration:none;"href="{% url 'signup' %}">Customer SignUp</a> 
-                <a class ='text-warning'style="padding-right:20px;text-decoration:none;"href="{% url 'signup2' %}">Manager SignUp </a> 
+            <li class="nav-item">
+                <a class ='nav-link text-warning'style="padding-right:20px; text-decoration:none;"href="{% url 'login' %}">Log In</a>
+              </li>
+              <li class="nav-item">
+                <a class ='nav-link text-warning'style="padding-right:20px; text-decoration:none;"href="{% url 'signup2' %}">Customer SignUp</a> 
+              </li>
+              <li class="nav-item">
+                <a class ='nav-link text-warning'style="padding-right:20px;text-decoration:none;"href="{% url 'signup' %}">Manager SignUp </a> 
+              </li>
             {% endif %}
             <li class="nav-item">
               <a class="nav-link text-warning" href="{% url 'cart:carts_detail'%}">cart</a>
@@ -33,9 +44,26 @@
             <li class="nav-item">
               <a class="nav-link text-warning" href="#">menu</a>
             </li>
+                    <li class="nav-item">
+                      <div class="dropdown" style="margin-right:20px;">
+                        <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                          User profiles
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                          <li><a class="dropdown-item" href="{%url 'admin'%}">Admin-Panel</a></li>
+                          <li><a class="dropdown-item" href="{%url 'profile'%}">customer-panel</a></li>
+                          <li><a class="dropdown-item" href="{%url 'mangerprofile'%}">restaurant-panel</a></li>
+                        </ul>
+                      </div>
+                    </li>
+                    
+            </div>
           </ul>
         </div>
       </nav>
+      
+      
+    
 
 
       {% block content %}{% endblock content %}
@@ -55,7 +83,7 @@
             <i class="fa fa-telegram " aria-hidden="true"></i>
             <i class="fa fa-youtube-play " aria-hidden="true"></i>
         </div>
-        <div>copyright &copy; 2021</div>
+        <div>copyright &copy; 2022</div>
       </footer>
 
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

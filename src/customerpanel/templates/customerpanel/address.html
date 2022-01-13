@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<script>
+
+username=localStorage.getItem("username");
+password=localStorage.getItem("password");
+
+$.ajax
+({
+  type: "GET",
+  url: "http://127.0.0.1:8000/profile/api/address/",
+  dataType: 'json',
+  headers: {
+    "Authorization": "Basic " + btoa(username + ":" + password)
+  },
+  
+  success: function (data){
+    console.log(data)
+    var newRows;
+            for (var i in data) {
+                newRows += "<tr><td>" + data[i]['id'] + "</td>"
+                    newRows += "<td>" + data[i]['city'] + "</td>"
+                    newRows += "<td>" + data[i]['street'] + "</td>"
+                    newRows += "<td>" + data[i]['plaque'] + "</td></tr>"
+            }
+            $("#t_body_category").html(newRows);
+  }
+});
+
+</script>
+
+<table class="table table-striped table-sm" style="margin:100px;">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>city</th>
+        <th>street</th>
+        <th>plaque</th>
+    </tr>
+    </thead>
+    <tbody id="t_body_category">
+
+    </tbody>
+</table>
+
+
+<form id="login" >
+    {% csrf_token %}
+    <label for="city">City:</label><br>
+    <input type="text" id="city" name="city"><br>
+    <label for="street">street:</label><br>
+    <input type="text" id="street" name="street"><br>
+    <label for="plaque">plaque:</label><br>
+    <input type="number" id="plaque" name="plaque"><br>
+    <a class="btn btn-primary" id="AddAdress"  >Add Adress</a>
+
+    
+  </form><br><br>
+  <form>
+    {% csrf_token %}
+    <label for="id_delete">Enter the ID you Want To Delete:</label><br>
+    <input type="number" id="id_delete" name="id_delete"><br>
+    
+    <a class="btn btn-primary" id="DeleteAdress"  >Delete Adress</a>
+
+    
+  </form><br><br>
+ 
+  <script>
+    function getCookie(name) {
+        var cookieArr = document.cookie.split(";");
+        for(var i = 0; i < cookieArr.length; i++) {
+            var cookiePair = cookieArr[i].split("=");
+            if(name == cookiePair[0].trim()) {
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+        
+        return null;
+    }
+    document.getElementById("AddAdress").addEventListener("click", function() {
+        var street = document.getElementById("street").value;
+        var city = document.getElementById("city").value;
+        var plaque = document.getElementById("plaque").value;
+    const URL = "http://127.0.0.1:8000/profile/api/address/";
+    CSRF_TOKEN = getCookie("csrftoken")
+    
+    username=localStorage.getItem("username");
+    password=localStorage.getItem("password");
+    $.ajax({
+        type: 'POSt',
+        dataType: 'json',
+        url: URL,
+        "headers": {
+            "Authorization": "Basic " + btoa(username + ":" + password),
+          "Content-Type": "application/x-www-form-urlencoded",
+          
+        },
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader("X-CSRFToken", CSRF_TOKEN);
+         },
+        data: {
+            "city": city,
+            "street": street,
+            "plaque": plaque
+          },
+        success: function (response) {
+            $.ajax
+                ({
+                type: "GET",
+                url: "http://127.0.0.1:8000/profile/api/address/",
+                dataType: 'json',
+                headers: {
+                    "Authorization": "Basic " + btoa(username + ":" + password)
+                },
+                
+                success: function (data){
+                    console.log(data)
+                    var newRows;
+                            for (var i in data) {
+                                newRows += "<tr><td>" + data[i]['id'] + "</td>"
+                                newRows += "<td>" + data[i]['city'] + "</td>"
+                                newRows += "<td>" + data[i]['street'] + "</td>"
+                                newRows += "<td>" + data[i]['plaque'] + "</td></tr>"
+                            }
+                            $("#t_body_category").html(newRows);
+                }
+                });
+        }
+    }).done(function (data) {
+        alert('insert success');
+    })
+   
+}, false);
+document.getElementById("DeleteAdress").addEventListener("click", function() {
+    var id_delete = document.getElementById("id_delete").value;
+   
+const URL = "http://127.0.0.1:8000/profile/api/address/"+id_delete;
+CSRF_TOKEN = getCookie("csrftoken")
+
+username=localStorage.getItem("username");
+password=localStorage.getItem("password");
+$.ajax({
+    type: 'DELETE',
+    dataType: 'json',
+    url: URL,
+    "headers": {
+        "Authorization": "Basic " + btoa(username + ":" + password),
+      "Content-Type": "application/x-www-form-urlencoded",
+      
+    },
+    beforeSend: function(xhr) {
+        xhr.setRequestHeader("X-CSRFToken", CSRF_TOKEN);
+     },
+    
+    success: function (response) {
+        $.ajax
+            ({
+            type: "GET",
+            url: "http://127.0.0.1:8000/profile/api/address/",
+            dataType: 'json',
+            headers: {
+                "Authorization": "Basic " + btoa(username + ":" + password)
+            },
+            
+            success: function (data){
+                console.log(data)
+                var newRows;
+                        for (var i in data) {
+                            newRows += "<tr><td>" + data[i]['id'] + "</td>"
+                            newRows += "<td>" + data[i]['city'] + "</td>"
+                            newRows += "<td>" + data[i]['street'] + "</td>"
+                            newRows += "<td>" + data[i]['plaque'] + "</td></tr>"
+                        }
+                        $("#t_body_category").html(newRows);
+            }
+            });
+    }
+}).done(function (data) {
+    alert('Delete success');
+})
+
+}, false);
+
+</script>
+{% endblock content %}

@@ -7,13 +7,17 @@
 </section>
     
     <h1 style='padding:100px; text-align:center;'>Your shopping cart</h1>
-    <a class="btn" style="background-color:orange;"href="{% url 'itemcreate'%}">continue shopping</a>
+    <a class="btn" style="background-color:orange;"href="{% url 'order:itemcreate'%}">continue shopping</a>
   
 
    
     <div>
-        <a class="btn" style="background-color:green; color:black;"href="{% url 'finish_order'%}">finish_order</a>
-    <table class="table table-striped">
+        {% for item in cart %}
+        {% with foodmenu=item.foodmenu  %}
+        <a class="btn" style="background-color:green; color:black;"href="{% url 'order:finish_order' foodmenu.id%}">finish_order</a>
+        {% endwith %}
+        {% endfor %}
+        <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col">Image</th>
@@ -30,10 +34,10 @@
                 <tr>
                     <td>
                         <a href="{{foodmenu.get_absolute_url}}">
-                            <img class="rounded-lg shadow" src="{{foodmenu.Food_id.photo.url}}" height="50" width="50" alt="">
+                            <img class="rounded-lg shadow" src="{{foodmenu.food.photo.url}}" height="50" width="50" alt="">
                         </a>
                     </td>
-                        <td>{{foodmenu.Food_id.name}}</td>
+                        <td>{{foodmenu.food.name}}</td>
                         <td>{{item.number}}</td>
                     <td>
                         <form action="{% url 'cart:cart_remove' foodmenu.id %}" method="POST">
