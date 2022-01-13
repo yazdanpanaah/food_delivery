@@ -7,6 +7,7 @@ from rest_framework import generics, permissions, response, status
 from rest_framework import permissions
 from .forms import *
 from django.contrib.auth.decorators import login_required
+from .decorators import *
 # Create your views here.
 
 
@@ -40,6 +41,8 @@ class AddressView(viewsets.ModelViewSet):
     def perform_create(self,serializer):
         serializer.save(owner=self.request.user)
 
+
+
 class OrderView(viewsets.ReadOnlyModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -52,6 +55,7 @@ class OrderView(viewsets.ReadOnlyModelViewSet):
         serializer.save(customer=self.request.user)
 
 @login_required
+# @customer_required()
 def profile(req):
     info = Customer.objects.filter(id = req.user.id)
     return render(req, 'customerpanel/profile.html', {'info':info})

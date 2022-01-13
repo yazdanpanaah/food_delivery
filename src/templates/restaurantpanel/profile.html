@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<br> 
+ 
+{% if user.is_authenticated %} 
+<div class="card text-center"> 
+    <div class="card-header"> 
+      Personal information 
+    </div> 
+    <div class="card-body"> 
+        {% if user.username %} 
+        <h5 class="card-title">{{ user.username }}</h5> 
+        {% else %} 
+        <h5 class="card-title">None</h5> 
+        {% endif %} 
+      <p class="card-text">email :{{user.email}}</p> 
+      
+      <a href="{% url 'department_view' user.pk %}" class="btn btn-primary">Show Branch Information</a> 
+    </div> 
+     
+  </div> 
+  <br> 
+   
+  <div class="row"> 
+    <div class="col-sm-6"> 
+      <div class="card"> 
+        <div class="card-body"> 
+          <h5 class="card-title">Order Status</h5> 
+          <a href="{%url 'order_status'%}" class="btn btn-primary">show orders</a> 
+        </div> 
+      </div> 
+    </div> 
+    <div class="col-sm-6"> 
+      <div class="card"> 
+        <div class="card-body"> 
+          <h5 class="card-title">Menu</h5> 
+           
+          <a href="{% url 'foodmenu_view' user.pk %}" class="btn btn-primary">show menu</a> 
+        </div> 
+        <div class="card-body"> 
+          <h5 class="card-title">ADD FOODMENU</h5> 
+           
+          <a href="{% url 'create_food' user.pk %}" class="btn btn-primary">add menu</a> 
+        </div> 
+      </div> 
+    </div> 
+  </div> 
+  {% endif %} 
+
+
+{% endblock content %}

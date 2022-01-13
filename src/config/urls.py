@@ -29,6 +29,8 @@ urlpatterns = [
     path('order/',include(('order.urls', 'order'), namespace='order')),
     path('profile/',include('customerpanel.urls')),
     path('api-auth/',include('rest_framework.urls')),
+    path('mangerprofile/',include('restaurantpanel.urls')),
+
 ]
 
 urlpatterns += static(settings.STATIC_URL,document_root = settings.STATIC_ROOT)

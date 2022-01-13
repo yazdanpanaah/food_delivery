@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="margin:200px;">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">customer</th>
+            <th scope="col">total_price</th>
+            <th scope="col">adress</th>
+            <th scope="col">status</th>
+            <th scope="col">update status</th>
+
+
+          </tr>
+        </thead>
+        <tbody>
+            {% for item in order %}
+          <tr>
+            <td>{{item.customer}}</td>
+            <td>{{item.total_price}}</td>
+            <td>{{item.adress}}</td>
+            <td>{{item.status}}</td>
+            <td><a class="btn btn-dark"href="{%url 'update_status' item.pk%}">update status</a></td>
+
+          </tr>
+          {% endfor %}
+       
+        </tbody>
+
+      </table>
+</div>
+
+{% endblock content %}

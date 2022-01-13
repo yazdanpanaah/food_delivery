@@ -55,7 +55,7 @@ class Category(models.Model):
 
 class FoodMenu(models.Model):
     food = models.ForeignKey(Food, on_delete= models.PROTECT,related_name='food2')
-    department = models.ForeignKey(Department, on_delete=models.CASCADE ,related_name='Department')
+    department = models.ForeignKey(Department, on_delete=models.CASCADE ,related_name='department1')
     price = models.IntegerField()
     number = models.IntegerField()
 
