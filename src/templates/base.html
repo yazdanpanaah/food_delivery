@@ -45,14 +45,14 @@
               <a class="nav-link text-warning" href="#">menu</a>
             </li>
                     <li class="nav-item">
-                      <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                          profiles
+                      <div class="dropdown" style="margin-right:20px;">
+                        <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                          User profiles
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                           <li><a class="dropdown-item" href="{%url 'admin'%}">Admin-Panel</a></li>
-                          <li><a class="dropdown-item" href="#">customer-panel</a></li>
-                          <li><a class="dropdown-item" href="#">restaurant-panel</a></li>
+                          <li><a class="dropdown-item" href="{%url 'profile'%}">customer-panel</a></li>
+                          <li><a class="dropdown-item" href="{%url 'mangerprofile'%}">restaurant-panel</a></li>
                         </ul>
                       </div>
                     </li>

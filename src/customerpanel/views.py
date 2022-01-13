@@ -1,6 +1,7 @@
 #from _typeshed import Self
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
+from django.views.generic.base import TemplateView
 from .serializers import *
 from rest_framework import generics, viewsets
 from rest_framework import generics, permissions, response, status
@@ -54,10 +55,16 @@ class OrderView(viewsets.ReadOnlyModelViewSet):
     def perform_create(self,serializer):
         serializer.save(customer=self.request.user)
 
-@login_required
-def profile(req):
-    info = Customer.objects.filter(id = req.user.id)
-    return render(req, 'customerpanel/profile.html', {'info':info})
+
+@customer_required()
+class CustomerProfile(TemplateView):
+    template_name = 'customerpanel/profile.html'
+
+# def profile(req):
+#     info = Customer.objects.filter(id = req.user.id)
+#     return render(req, 'customerpanel/profile.html', {'info':info})
+   
+        
 
 def update_profile(request):
     if request.method == 'POST':

@@ -1,6 +1,9 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import View
 
+from accounts.models import Customer
+from django.http import HttpResponse
+
 
 
 def customer_required():
@@ -11,3 +14,15 @@ def customer_required():
 
         return WrappedClass
     return wrapper 
+
+# def customer_required2():
+#     def wrapper(request, *args, **kwargs):
+#         user = request.customer
+#         customer = Customer.objects.get(id=user.id) #id
+#         if not (user.is_staff) and not (user.is_superuser):
+#             return function(request, *args, **kwargs)
+            
+#         else:
+#             return HttpResponse('You cannot view this.')
+            
+#     return wrapper

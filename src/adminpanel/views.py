@@ -11,6 +11,7 @@ def adminpanel(req):
     foods = Food.objects.all()
     context = {'food': foods}
     return render(req,'adminpanel/admin.html',context)
+    
 @superuser_required()
 class AddFood(CreateView):
     model = Food
