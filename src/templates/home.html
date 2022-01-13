@@ -10,10 +10,19 @@
   <div id="dialog-content"></div>
 </div>
   
-<div style= 'background-image: URL("https://images2.alphacoders.com/108/1085778.jpg"); background-position: center;
+<div style= 'background-image: URL("https://i.postimg.cc/V65SG4RN/hambg.jpg"); background-position: center;
 background-size: cover;
 height: 500px;
 width: 100%;'></div>
+<center>
+<form method="GET" action="{% url 'restaurant:search' %}" >
+  {% csrf_token %}
+
+  <input class="form-control bg-dark d-inline p-2" type="text" placeholder="search" aria-label="search" name="search" style="width:400px;">
+  <button class='d-inline p-2' type="submit" >Go</button>
+
+</form>
+</center>
 
 
  

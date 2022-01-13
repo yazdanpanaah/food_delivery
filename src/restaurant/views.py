@@ -3,6 +3,7 @@ from Cart.forms import *
 from restaurant.models import Department, Food, FoodMenu
 from django.db.models.aggregates import Count, Sum
 from Cart.cart import Cart
+from django.db.models import Q
 # Create your views here.
 def home(req):
     foodmenu = FoodMenu.objects.all()
@@ -44,3 +45,14 @@ def food_detail(request,id):
 #     return food
 
 
+def search(req):
+	results=[]
+	if req.method == "GET":
+		query = req.GET.get('search')
+		if query == '':
+			query = 'None'
+		results = FoodMenu.objects.filter(Q(food__name__icontains= query)| Q(department__name__icontains=query ))
+
+	context ={'query': query, 'results': results}
+	
+	return render(req, 'search.html', context)

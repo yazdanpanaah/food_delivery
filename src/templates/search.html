@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+<div class="container">
+   {% comment %} <a href="{% url 'Home' %}" class="btn btn-primary  mb-2" style="margin-top: 10px">Home</a> {% endcomment %}
+  {% if query %}
+            <h2>
+            {% with results.count as total_results %}
+            Found {{ total_results }} result{{ total_results|pluralize }}
+            {% endwith %}
+            </h2>
+                <center>
+                <div class="container-fluid" style="margin-top:30px;">
+                    {% for foodmenu in results %}
+                        <h1>{{foodmenu.food.name}}</h1>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <img src="{{foodmenu.food.photo.url}}" width="300" height="200" alt="">
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <b>Details : </b>
+                                    <p>{{foodmenu.food.discreption}}</p>
+                                </div>
+                                <div class="row">
+                                    <p><a href="{{foodmenu.get_absolute_url}}">{{foodmenu.food.category}}</a></p>
+                                </div>
+                                <div class="row">
+                                    <p style="font-weight: bolder;font-size:larger;">branch: {{foodmenu.department}}</p>
+                                </div>
+                                <div class="row">
+                                    <p style="font-weight: bolder;font-size:larger;">{{foodmenu.price}} T</p>
+                                </div>
+                                <div class="row">
+                    
+                             <a class="btn btn-outline-success d-inline-block" href="{% url 'restaurant:food_detail' foodmenu.id %}">View foodmenu</a>
+                            </div>
+                           
+                            
+                            
+                        </div>
+                    </div>
+            
+                        
+                    {% endfor %}	
+                            
+                </div>
+            </center>
+            
+ </div>
+       {% endif %}  
+
+
+
+{% endblock content %}
