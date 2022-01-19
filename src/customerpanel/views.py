@@ -9,6 +9,9 @@ from rest_framework import permissions
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from .decorators import *
+from django.utils.decorators import method_decorator
+
+ 
 # Create your views here.
 
 
@@ -55,7 +58,7 @@ class OrderView(viewsets.ReadOnlyModelViewSet):
     def perform_create(self,serializer):
         serializer.save(customer=self.request.user)
 
-
+@method_decorator(login_required, name='dispatch')
 @customer_required()
 class CustomerProfile(TemplateView):
     template_name = 'customerpanel/profile.html'

@@ -15,7 +15,7 @@ class Cart:
     def add(self,foodmenu,number=1,override_number=False):
         foodmenu_id = str(foodmenu.id)
         if foodmenu_id not in self.cart:
-            self.cart[foodmenu_id] = {'number':0,'price':foodmenu.price}
+            self.cart[foodmenu_id] = {'number':0,'price':foodmenu.price }
         if override_number:
             self.cart[foodmenu_id]['number'] = number
         else:

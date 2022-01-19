@@ -16,7 +16,7 @@ class DepartmentView(ListView):
     model = Department
     template_name = 'restaurantpanel/branch.html' 
     def get_queryset(self, *args, **kwargs): 
-        return Department.objects.filter(manager = self.kwargs['pk'])   
+        return Department.objects.filter(manager = self.request.user.id)   
  
 @is_staff_required()
 class UpdateDepartment(UpdateView): 
@@ -30,7 +30,7 @@ class FoodMenuView(ListView):
     model = FoodMenu 
     template_name = "restaurantpanel/foodmenu.html" 
     def get_queryset(self, *args, **kwargs): 
-        return FoodMenu.objects.filter(department__manager= self.kwargs['pk'])  
+        return FoodMenu.objects.filter(department__manager= self.request.user.id)  
 
 class UpdateFoodMenu(UpdateView): 
     model = FoodMenu 
@@ -76,3 +76,9 @@ class UpdateStatus(UpdateView):
     template_name = "restaurantpanel/update_status.html" 
     fields = ['status']
     success_url = reverse_lazy('order_status')
+
+# def update_status(request ,id):
+#     if request.POST:
+#         status = request.POST.get('status')
+#         update_status = Order.objects.filter(id =id).update(status= status)
+

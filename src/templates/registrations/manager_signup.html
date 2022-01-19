@@ -2,8 +2,9 @@
 {% block css %}{% endblock css %}
 {% load crispy_forms_tags %} 
 {% block content %}
-<div style='padding:200px;'>
-<h2>Sign Up</h2>
+<center>
+<div style='padding:60px;'>
+<h2>Manage Sign Up</h2>
     <form method="POST">
         {% csrf_token %}
         {{ register_form|crispy }}  
@@ -11,4 +12,5 @@
         <button type="submit">Sign Up</button>
     </form>
 </div>
+</center>
 {% endblock content %}

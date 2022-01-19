@@ -17,6 +17,7 @@ class Admin(CustomeUser):
     def save(self,*args, **kwargs):
         if not self.id:
             self.is_superuser = True
+            self.is_staff = False
         return super(Admin,self).save(*args,**kwargs) 
        
 
@@ -46,13 +47,12 @@ class Customer(CustomeUser):
             self.is_superuser = False
         return super(Customer,self).save(*args,**kwargs)
 
-    # def save(self, commit=True):
-    #     # Save the provided password in hashed format
-    #     user = super(Customer, self).save(commit=False)
-    #     user.set_password(self.cleaned_data["password"])
-    #     if commit:
-    #         user.save()
-    #     return user
+    @staticmethod
+    def get_customer_by_email(email):
+        try:
+            return Customer.objects.get(email= email)
+        except:
+            return False
 
 class CustomerAdress(models.Model):
     main_adress = models.BooleanField(default=False)

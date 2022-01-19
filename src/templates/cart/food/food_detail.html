@@ -35,8 +35,10 @@
                     
                     {% csrf_token %}
                     {{form}}
+                    <input type='number'  name='number'  min="0" max={{foodmenu.number}}>
                     <button type="submit" class="btn btn-primary text-light" >Add to cart <i class="fas fa-shopping-cart"></i></button>
                 </form>
+                <a class="btn btn-success" style=" margin-top:20px;"href="{% url 'restaurant:menu' foodmenu.id%}">see other foods of this branch</a>
             </div>
             
         </div>

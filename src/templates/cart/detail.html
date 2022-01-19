@@ -1,22 +1,21 @@
 {% extends 'base.html' %}
-
+{% block css %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+{% endblock css %}
 {% block content %}
+{% load crispy_forms_tags %} 
     
 <section style='padding:80px;'>
     {% include 'cart/food/messages.html'%}
 </section>
     
     <h1 style='padding:100px; text-align:center;'>Your shopping cart</h1>
-    <a class="btn" style="background-color:orange;"href="{% url 'order:itemcreate'%}">continue shopping</a>
+    {% comment %} <a class="btn" style="background-color:orange;"href="{% url 'order:itemcreate'%}">continue shopping</a> {% endcomment %}
   
 
    
     <div>
-        {% for item in cart %}
-        {% with foodmenu=item.foodmenu  %}
-        <a class="btn" style="background-color:green; color:black;"href="{% url 'order:finish_order' foodmenu.id%}">finish_order</a>
-        {% endwith %}
-        {% endfor %}
+        
         <table class="table table-striped">
         <thead>
             <tr>
@@ -53,10 +52,148 @@
             <tr>
                 <td>Total</td>
                 <td colspan="4"></td>
-                <td>{{cart.get_total_price}}</td>
+                <td name ='total_price'>{{cart.get_total_price}}</td>
             </tr> 
         </table>
     </div>
+
+<!--------------------------modal---------------------------------->
+
+
+
+                  {% if request.session.cart %}
+
+                  {% if user.is_authenticated %}
+                    <div >
+                        <a href ="#"data-toggle="modal" data-target="#exampleModal" 
+                        class="btn btn-outline-success border rounded  ">
+                        finish_order</a>
+                    </div>
+                  {% else %}
+                    <div >
+                      <a href="{% url 'account_login' %}"
+                      class="btn btn-outline-success border rounded ">
+                    finish_ordder</a>
+                    </div>
+                  {% endif %}
+
+                  
+                  {% endif %}
+
+                  </div>
+                  </div>
+
+
+                  <!-- modal -->
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModal" tabindex="-1" 
+                  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                  <div class="modal-header"> <!-- modal-header -->
+                  <h5 class="modal-title" id="exampleModalLabel">
+                      finish order form
+                  </h5>
+                  <hr>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  </div>
+                  <div class="modal-body">
+                  <div class="m-2 p-3">
+                    <form action="{%url 'order:finish_order'%}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group" id='address_list'>  <!-- ----------- here --------------- -->
+                          <label for="">Address</label>
+                          <select name="address_id" class="form-control" aria-describedby="helpId">
+                            {% for address in address_list %}
+                                <option value="{{ address.id }}">
+                                  {{ address.city }}  {{ address.street }}  {{ address.plaque }}
+                                </option>
+                            {% endfor %}
+                            </select>
+                        </div>
+
+
+
+                        <div class="m-3 p-3">
+                          <a href="#" data-toggle="modal" data-target="#AddAddressModal" 
+                          class="btn button-170  float-right">add new address</a>
+                        </div>    
+                      <input type="submit" class="btn float-right btn-outline-success col-lg-6" value="finish order">
+                    
+                    </form>
+                  </div>
+                  </div> 
+
+                  </div>
+                  </div>
+                  </div>
+                 
+                  <div class="modal fade" id="AddAddressModal" tabindex="-1" 
+                  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                  <div class="modal-header"> <!-- modal-header -->
+                  <h5 class="modal-title" id="exampleModalLabel">
+                      Add Address
+                  </h5>
+                  <hr>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  </div>
+                  <div class="modal-body">
+                  <div class="m-2 p-3">
+                    <form id="add_new" method="POST">
+                      {% csrf_token %}
+                      {{ form|crispy }}
+                      <div class = "col text-center">
+                      <input type="submit" class="btn button-170" value="Add" >
+                          
+                      </div>
+                  </form>
+                  </div>
+                  </div> 
+
+                  </div>
+                  </div>
+                  </div>
+
+                  
+   
+  {% block script %}
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script>
+    
+    $(document).ready(function () {
+        $("#add_new").submit(function (event) {
+          $('#AddAddressModal').modal().hide();
+            event.preventDefault();
+            // serialize the data for sending the form data.
+            var serializedData = $(this).serialize();
+            
+            // make POST ajax call
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'ajax_address' %}",
+                data: serializedData,
+                success: function (response) {
+                    $('#AddAddressModal').modal().hide();
+                    $("#add_new").trigger('reset');
+                    $('#AddAddressModal').modal('hide');
+                    $('#address_list').html(response.data)
+  
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                }
+            })
+        })  
+    })
+  </script>
+  {% endblock script %}
    
     
 {% endblock content %}
