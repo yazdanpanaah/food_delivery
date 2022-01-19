@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'order.apps.OrderConfig',
     'adminpanel',
     'customerpanel',
-    'restaurantpanel'
+    'restaurantpanel',
+    'django.contrib.humanize'
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomeUser'

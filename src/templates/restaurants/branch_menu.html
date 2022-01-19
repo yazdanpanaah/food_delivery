@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div style="margin-top:100px;">
+
+<div class='d-flex flex-row bd-highlight mb-3 row row-cols-2 row-cols-lg-3'>
+    {% for dep in branch  %}
+    <div>
+    {% if dep.photo %}
+    <section class="box-element product">
+      <img class="thumbnail" style="height: 200px; width: 300px; padding-left:30px" src="{{ dep.photo.url }}" alter="#">
+    </section>
+    {% else %}
+    <p></p>
+    {% endif %}
+    <section class="box-element product">
+      <h5 style='padding-left:40px '><strong>{{dep.name}}</strong></h5>
+    </section>
+    <section class="box-element product">
+      <h5 style='padding-left:40px '><strong>{{dep.city}}-{{dep.address}}</strong></h5>
+    </section>
+    <section class="box-element product">
+      <h5 style='padding-left:40px '><strong>{{dep.created_date_jalali}}</strong></h5>
+    </section>
+    <a class="btn btn-outline-success" style=" margin-bottom:20px; margin-left:30px" href="{%url 'restaurant:show_menu' dep.id%}">show menu</a>
+
+
+    </div>
+
+    {% endfor %}
+    </div>
+
+
+
+
+</div>
+
+
+
+
+
+
+{% endblock content %}

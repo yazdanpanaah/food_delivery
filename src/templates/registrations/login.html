@@ -1,11 +1,40 @@
 {% extends 'base.html' %}
-{% comment %} {% block css %}{% endblock css %} {% endcomment %}
-{% block content %}
 {% load crispy_forms_tags %} 
-<form method="POST" action="{% url 'restaurant:home' %}">
-    {% csrf_token %}
-    {{ register_form|crispy }}  
-    {{form.as_p}}
-    <button type="submit">login</button>
+{% block content %}
+
+<center style="background-color:black;  font-weight:bold; ">
+<div class="container py-5" >
+  <section style='margin-top:10px;'>
+    {% include 'cart/food/messages.html'%}
+  </section>
+    <div class="card bg-dark text-white">
+      
+    <img src="https://res.feednews.com/assets/v2/2c1a9d92f4ad33df397d943051f4a416?width=1280&height=720&quality=hq&category=us_Food" class="card-img" alt="...">
+   
+    <div class="card-img-overlay">
+    <div class="card-body">
+    <form id="login" method="POST" style="color:black; margin-top:50px;">
+      {% csrf_token %}
+      {{ login_form|crispy }}
+      <button class="btn btn-primary" style="margin-top:10px;" id="login_submit" type="submit">Login</button>
+      <p class="text-center">Don't have an account? <a href="/register">Create an account</a>.</p>
+    </div>
+</div>
 </form>
-{% endblock content %}
+
+</div>
+</center>
+<script>
+  document.getElementById("login_submit").addEventListener("click", function() {
+
+    var username = document.getElementById("id_username").value;
+    var password = document.getElementById("id_password").value;
+    localStorage.setItem("username", username);
+    localStorage.setItem("password", password);
+  
+    
+
+}, false);
+</script>
+    
+  {% endblock content %}

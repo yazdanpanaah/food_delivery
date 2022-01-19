@@ -5,20 +5,9 @@ from .cart import Cart
 from restaurant.models import *
 from .forms import CartAddProductForm
 from django.contrib import messages
+from accounts.forms import *
+from accounts.models import *
 
-
-# Create your views here.
-
-
-# @require_POST
-# def cart_add(request,foodmenu_id):
-#     cart = Cart(request)
-#     foodmenu = get_object_or_404(FoodMenu,id=foodmenu_id)
-#     form = CartAddProductForm(request.POST)
-#     if form.is_valid():
-#         cd = form.cleaned_data
-#         cart.add(foodmenu = foodmenu ,number=cd['number'],override_number=cd['override'])
-#         return redirect('cart:carts_detail') 
 
 @require_POST
 def cart_add(request,foodmenu_id):
@@ -27,31 +16,18 @@ def cart_add(request,foodmenu_id):
     form = CartAddProductForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        if int(request.POST['number']) <= ((FoodMenu.objects.all().filter(id = foodmenu_id).values_list('number').last())[0]):
-            
-            cart.add(foodmenu = foodmenu ,number=cd['number'],override_number=cd['override'])
+    if not (request.session.get(settings.CART_SESSION_ID)):
+        request.session['branch'] = foodmenu.department.id
+    
+    if request.session['branch'] == foodmenu.department.id: 
+        cart.add(foodmenu = foodmenu ,number= int(request.POST['number']),override_number=cd['override'])
         
-            
-            return redirect('cart:carts_detail') 
-        else:
-            
-            messages.error(request, 'this food is not availbale in this amount!')
-            return redirect('cart:carts_detail')
+    else:
+        cart.clear() 
+        messages.error(request, "you can not order from diffrent branches!choose your items again")
+    return redirect('cart:carts_detail')
         
-            
-        
-     
 
-    # if request.method == 'POST':
-    #     if request.user.is_authenticated:
-    #             user = Customer.objects.filter(username = request.user).values_list()[0][0]
-    #             customer = Customer.objects.get(id=user)
-    #             # print(customer)
-    #             order = Order.objects.create(status="order", customer_id = customer)
-    #             order.save()
-    #             for item in cart:
-    #                     order_item = OrderItem.objects.create(order_id= order,food_menu_id=item['foodmenu'],price=item['price'],number=item['number'])
-    #                     order_item.save()
         
 
 @require_POST
@@ -83,11 +59,18 @@ def cart_detail(request):
             'number':item["number"],
             "override":True,
         })
-    return render(request,'cart/detail.html',{'cart':cart })
+    if request.user.is_authenticated:
+        customer = Customer.objects.get(id=request.user.id)
+        form=AddAddressForm()
+        addresses = Adress.objects.filter(owner=customer)
+        return render(request,'cart/detail.html',{'cart':cart ,'address_list':addresses,'form':form })
+    
+    
+    return render(request,'cart/detail.html',{'cart':cart})
     
 
     
     
-        
+
     
 

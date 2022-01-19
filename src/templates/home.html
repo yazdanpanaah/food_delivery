@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {%load static%}
 {% block css %}
+<link rel="shortcut icon" href="#">
 <link href="{% static 'home/style.css' %}" rel="stylesheet">
+
 {% endblock css %}
 {% block content %}
 
@@ -14,25 +16,99 @@
 background-size: cover;
 height: 500px;
 width: 100%;'></div>
-<center>
+<section style='margin-top:10px;'>
+  {% include 'cart/food/messages.html'%}
+</section>
+ {% comment %} <center>
 <form method="GET" action="{% url 'restaurant:search' %}" >
   {% csrf_token %}
 
-  <input class="form-control bg-dark d-inline p-2" type="text" placeholder="search" aria-label="search" name="search" style="width:400px;">
+  <input class="form-control bg-dark d-inline text-light p-2" type="text" placeholder="search" aria-label="search" name="search" style="width:400px;">
   <button class='d-inline p-2' type="submit" >Go</button>
 
 </form>
-</center>
+</center>  {% endcomment %}
+{% comment %} {% if not request.user.is_staff %}
+ <div class="w-10 text-center">
+	<form id="search-form" autocomplete='off' style="margin-top: 10px;">
+		{% csrf_token %}
+		<input type="text" id='search-input' class='p-1 w-50 search' placeholder="search">
+	</form>	
+	<div id="result-box" class="result-card not-visible" style="width: 50%;max-height:none;"></div>
+</div> 
+{% endif %} {% endcomment %}
+{% comment %} <div class='text-center'>
+      
+  <input id="user-input" placeholder="Search" class='col-10'>
+  <i id="search-icon" class="fas fa-search" ></i>
+  
 
+</div> {% endcomment %}
 
- 
   <h3 id="classic-czech-cuisine" style='font-weight:bold; padding-bottom:100px;'>WELCOME TO ONLINE RESTAURANT</h3> 
   
 </div>
-  
 
+
+
+
+
+<div>
+  <h1>popular foods</h1>
+</div>
+<div class='d-flex flex-row bd-highlight mb-3 row row-cols-2 row-cols-lg-3'>
+  {% for food in best_food  %}
+  <div>
+  <img class="thumbnail" style="height: 200px; width: 300px; padding-left:30px" src="{{ food.food.photo.url }}">
+  <section class="box-element product">
+    <h5 style='padding-left:40px '><strong>{{food.food.name}}-----------branch: {{food.department}}</strong></h5>
+  </section>
+  <section class="box-element product">
+  {% if not request.user.is_staff %}
+          <a class="btn btn-outline-success" style=" margin-bottom:20px; margin-left:30px" href="{%url 'restaurant:food_detail' food.id%}">View Product</a>
+   {% endif %}
+    </section>
+</div>
+
+  {% endfor %}
+</div>
+
+
+
+
+
+
+
+<hr>
+                      <h1>popular restaurants</h1>
+                      <div class='d-flex flex-row bd-highlight mb-3 row row-cols-2 row-cols-lg-3'>
+                      {% for dep in best_department %}
+                      <div>
+                      {% if dep.photo %}
+                      <section class="box-element product">
+                        <img class="thumbnail" style="height: 200px; width: 300px; padding-left:30px" src="{{ dep.photo.url }}" alter="#">
+                      </section>
+                      {% else %}
+                      <p></p>
+                      {% endif %}
+                      <section class="box-element product">
+                        <h5 style='padding-left:40px '><strong>{{dep.name}}</strong></h5>
+                      </section>
+                      <section class="box-element product">
+                        <h5 style='padding-left:40px '><strong>{{dep.city}}-{{dep.address}}</strong></h5>
+                      </section>
+                      <section class="box-element product">
+                        <h5 style='padding-left:40px '><strong>{{dep.created_date_jalali}}</strong></h5>
+                      </section>
+
+
+                      </div>
+
+                      {% endfor %}
+                      </div>
+<hr>
     <center> <h2>FOOD MENUS</h2></center>
-   
+ 
     
 		<div class='d-flex flex-row bd-highlight mb-3 row row-cols-2 row-cols-lg-3'>
        
@@ -40,7 +116,9 @@ width: 100%;'></div>
         <div >
         <img class="thumbnail" style="height: 300px; width: 400px; padding-left:30px; padding-right:30px;" src="{{ foods.food.photo.url }}">
           <h5 style='padding-left:30px; padding-top:10px; padding-bottom:10px  '><strong>{{foods.food.name}}--------------------------${{foods.price}}</strong></h5>
+          {% if not request.user.is_staff %}
           <a class="btn btn-outline-success" style=" margin-bottom:20px; margin-left:30px" href="{%url 'restaurant:food_detail' foods.id%}">View Product</a>
+          {% endif %}
        </div>
      
       
@@ -49,46 +127,11 @@ width: 100%;'></div>
 
             <hr>
 
-        <div>
-        <h1>popular foods</h1>
-      </div>
-            
-
-
-        {% for food in best_food  %}
-
-        <img class="thumbnail" style="height: 300px; width: 400px; padding-left:30px" src="{{ food.photo.url }}">
-        <section class="box-element product">
-          <h5 style='padding-left:40px '><strong>{{food.name}}</strong></h5>
-        </section>
-        <section class="box-element product">
-          <h5 style='padding-left:40px '><strong>{{food.department}}</strong></h5>
-        </section>
-
-        {% endfor %}
+        
      
 
         <hr>
-        <h1>popular restaurants</h1>
-
-        {% for dep in best_department %}
-        <section class="box-element product">
-          <img class="thumbnail" style="height: 300px; width: 400px; padding-left:30px" src="{{ dep.photo.url }}">
-        </section>
-        <section class="box-element product">
-          <h5 style='padding-left:40px '><strong>{{dep.name}}</strong></h5>
-        </section>
-        <section class="box-element product">
-          <h5 style='padding-left:40px '><strong>{{dep.city}}-{{dep.address}}</strong></h5>
-        </section>
-        <section class="box-element product">
-          <h5 style='padding-left:40px '><strong>{{dep.created_date_jalali}}</strong></h5>
-        </section>
-      
-
-
-
-        {% endfor %}
+       
 
 
   
@@ -97,6 +140,118 @@ width: 100%;'></div>
 
 
 {% endblock content %}
+
+
+
 {% block script %}
 <script src="{% static 'home/home.js' %}"></script>
+ {% comment %} <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>  {% endcomment %}
+{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> {% endcomment %}
+
+
+{% comment %} <script>
+  $("#user-input").keyup(function () {
+    console.log(111);
+    var q = $(this).val();
+    console.log(q)
+    $.ajax({
+      url: "{% url 'restaurant:search' %}",
+      data: {'q':q},
+
+      dataType:'json',
+
+      success: function (response) {
+        $('#result').html(response.data)
+
+      },
+      error: function (response) {
+        alert(response["responseJSON"]["error"]);
+      }
+    })
+
+    
+  })
+</script> {% endcomment %}
+
+
+ {% comment %} <script > 
+  var CSRF_TOKEN = "{{ csrf_token }}";
+  var URL ="{% url 'restaurant:search2' %}";
+</script>
+<script>
+  window.onload = function (){
+      
+      const url=  window.location.href
+      const searchForm = document.getElementById("search-form")
+      const searchInput = document.getElementById("search-input")
+      const resultBox = document.getElementById('result-box')
+      
+      const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value
+      
+      const sendSearchData = (data)=>{
+          $.ajax({
+              type:'POST',
+              url: URL,
+              data :{
+                  'csrfmiddlewaretoken':csrf,
+                  'data': data,
+              },
+              success: function(res){
+                  console.log(res.dataview)
+                  const data = res.dataview
+                  if (Array.isArray(data)){
+                      resultBox.innerHTML = ""
+                      data.forEach(food=>{
+                          resultBox.innerHTML += `
+                          
+                          <a href="/detail/${food.pk}" class='item' >
+                              <div class ="row" style="margin-left:300px; margin-top:20px;">
+                                  <div class ="col-2>
+                                      <p class="text-muted" ><img style="height: 50px; width: 100px; padding-left:30px" src="${food.food.photo}" class="food-img"> <b style="color:black">${food.food.name}</b>  <b style="color:#6610f2">${food.branch.department}</b></p>
+                                      <hr>
+                                
+                                      
+                                  </div>
+                              </div>
+                          </a>
+                          `
+                      })
+      
+      
+                  }else{
+                      if (searchInput.value.length > 0){
+                          resultBox.innerHTML=`<b>${data}</b>`
+                      }else{
+                          resultBox.classList.add('not-visible')
+                      }
+                  }
+             
+              },
+              error: function(error){
+                  console.log(error)
+              }
+          })
+      }
+      
+      
+      // load whatever is added in search input as value (letter by letter)
+      searchInput.addEventListener("keyup", e=>{
+          console.log(e.target.value)
+          if (resultBox.classList.contains('not-visible')){
+              resultBox.classList.remove('not-visible')
+          }
+          sendSearchData(e.target.value)
+      })
+        
+      }
+
+</script>  {% endcomment %}
+
+
+
+
+
+
+
 {% endblock script %}
